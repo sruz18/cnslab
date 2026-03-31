@@ -1,19 +1,15 @@
 package cns;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class CaesarCipher {
 
     static Scanner sc = new Scanner(System.in);
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         System.out.print("Enter any string: ");
-        String str = br.readLine();
+        String str = sc.nextLine();
 
         System.out.print("Enter the key: ");
         int key = sc.nextInt();
@@ -48,28 +44,8 @@ public class CaesarCipher {
 
         return encrypted;
     }
-
     // Decryption
-    public static String decrypt(String str, int key) {
-
-        String decrypted = "";
-
-        for (int i = 0; i < str.length(); i++) {
-
-            char c = str.charAt(i);
-
-            if (Character.isUpperCase(c)) {
-                c = (char)(c - key % 26);
-                if (c < 'A') c += 26;
-            }
-            else if (Character.isLowerCase(c)) {
-                c = (char)(c - key % 26);
-                if (c < 'a') c += 26;
-            }
-
-            decrypted += c;
-        }
-
-        return decrypted;
+   public static String decrypt(String str, int key) {
+    return encrypt(str, 26 - (key % 26));
     }
 }

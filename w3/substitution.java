@@ -1,38 +1,52 @@
+
 import java.util.*;
 
-public class SubCipher {
-    
-    static String a = "abcdefghijklmnopqrstuvwxyz ";
-    static String b = "zyxwvutsrqponmlkjihgfedcba ";
+public class Q3_2_Subtitution {
+
+    static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+    static String encrypt(String text, String key) {
+        text = text.toLowerCase();
+        String result = "";
+
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                int index = alphabet.indexOf(c);
+                result += key.charAt(index);
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    static String decrypt(String text, String key) {
+        String result = "";
+
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                int index = key.indexOf(c);
+                result += alphabet.charAt(index);
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter any string: ");
-        String text = sc.nextLine().toLowerCase();
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
 
-        String enc = encrypt(text);
-        String dec = decrypt(enc);
+        System.out.print("Enter 26-letter key: ");
+        String key = sc.nextLine();
 
-        System.out.println("Encrypted text: " + enc);
-        System.out.println("Decrypted text: " + dec);
-    }
+        String encrypted = encrypt(text, key);
+        String decrypted = decrypt(encrypted, key);
 
-    static String encrypt(String text) {
-        String res = "";
-        for (char ch : text.toCharArray()) {
-            int i = a.indexOf(ch);
-            res += (i != -1) ? b.charAt(i) : ch;
-        }
-        return res;
-    }
-
-    static String decrypt(String text) {
-        String res = "";
-        for (char ch : text.toCharArray()) {
-            int i = b.indexOf(ch);
-            res += (i != -1) ? a.charAt(i) : ch;
-        }
-        return res;
+        System.out.println("Encrypted: " + encrypted);
+        System.out.println("Decrypted: " + decrypted);
     }
 }

@@ -1,18 +1,25 @@
-import java.util.Base64;
-import javax.crypto.Cipher;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
-public class w7_Blowfishalgorithm {
+class bf {
     public static void main(String[] args) throws Exception {
-        String s = "Hello World", k = "451017189";
-        SecretKeySpec key = new SecretKeySpec(k.getBytes(), "Blowfish");
+        String key = "451017189";
+        String s = "Hello World";
+
+        SecretKeySpec k = new SecretKeySpec(key.getBytes(), "Blowfish");
         Cipher c = Cipher.getInstance("Blowfish");
 
-        c.init(Cipher.ENCRYPT_MODE, key);
-        String e = Base64.getEncoder().encodeToString(c.doFinal(s.getBytes()));
-        c.init(Cipher.DECRYPT_MODE, key);
+        c.init(Cipher.ENCRYPT_MODE, k);
+        byte[] enc = c.doFinal(s.getBytes());
+        System.out.println("Encrypted: " + new String(enc));
 
-        System.out.println("Encrypted: " + e);
-        System.out.println("Decrypted: " + new String(c.doFinal(Base64.getDecoder().decode(e))));
+        c.init(Cipher.DECRYPT_MODE, k);
+        String dec = new String(c.doFinal(enc));
+        System.out.println("Decrypted: " + dec);
     }
 }
+
+/*
+Encrypted: ?f·àh{í·?2w??½
+Decrypted: Hello World
+*/
