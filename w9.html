@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Diffie-Hellman Key Exchange</title>
+</head>
+
+<body style="text-align:center; font-family:Arial; margin-top:40px;">
+
+    <h2>🔐 Diffie-Hellman Key Exchange</h2>
+
+    Prime (p): <input type="number" id="p"><br><br>
+    Generator (g): <input type="number" id="g"><br><br>
+    1st Secret (a): <input type="number" id="a"><br><br>
+    2nd Secret (b): <input type="number" id="b"><br><br>
+
+    <button onclick="calculate()">Generate Key</button>
+
+    <h3>Results</h3>
+    <p>Public Key A: <span id="A"></span></p>
+    <p>Public Key B: <span id="B"></span></p>
+    <p>Secret at 1st Person: <span id="SA"></span></p>
+    <p>Secret at 2nd Person: <span id="SB"></span></p>
+    <p id="result"></p>
+
+    <script>
+        function calculate() {
+            let p = parseInt(document.getElementById("p").value);
+            let g = parseInt(document.getElementById("g").value);
+            let a = parseInt(document.getElementById("a").value);
+            let b = parseInt(document.getElementById("b").value);
+
+            // Same logic as your Java code
+            let A = Math.pow(g, a) % p;
+            let B = Math.pow(g, b) % p;
+
+            let S_A = Math.pow(B, a) % p;
+            let S_B = Math.pow(A, b) % p;
+
+            document.getElementById("A").innerText = A;
+            document.getElementById("B").innerText = B;
+            document.getElementById("SA").innerText = S_A;
+            document.getElementById("SB").innerText = S_B;
+
+            if (S_A === S_B) {
+                document.getElementById("result").innerHTML =
+                    "✅ They can communicate! Shared Secret: " + S_A;
+            } else {
+                document.getElementById("result").innerHTML =
+                    "❌ They can't communicate!";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
