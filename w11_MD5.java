@@ -1,50 +1,29 @@
-package cns;
-
 import java.security.MessageDigest;
-import java.util.Scanner;
 
-public class w11_MD5 {
+public class w10_SHA {
 
-    public static void main(String[] args) {
+    public static String hash(String input) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] messageDigest = md.digest(input.getBytes());
 
-        try {
-            Scanner sc = new Scanner(System.in);
-
-            System.out.print("Enter text: ");
-            String input = sc.nextLine();
-
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            // Generate hash
-            String hash = getHash(md, input);
-
-            System.out.println("\nMD5 Hash: " + hash);
-
-            sc.close();
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    // Method to generate hash
-    public static String getHash(MessageDigest md, String input) {
-
-        md.update(input.getBytes());
-        byte[] digest = md.digest();
-
-        return bytesToHex(digest);
-    }
-
-    // Convert to hex
-    public static String bytesToHex(byte[] bytes) {
-
-        String result = "";
-
-        for (int i = 0; i < bytes.length; i++) {
-            result += String.format("%02X", bytes[i]);
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : messageDigest) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
         }
 
-        return result;
+        return hexString.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String message = "Banking Transaction Data";
+
+        String hashedMessage = hash(message);
+
+        System.out.println("Original: " + message);
+        System.out.println("MD5     : " + hashedMessage);
     }
 }
