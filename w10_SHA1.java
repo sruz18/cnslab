@@ -1,6 +1,6 @@
 import java.security.MessageDigest;
 
-public class w10_SHA {
+public class w10_SHA1 {
 
     public static String hash(String input) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA-1");

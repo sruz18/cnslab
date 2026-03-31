@@ -1,57 +1,35 @@
 <!DOCTYPE html>
 <html>
+<body>
 
-<head>
-    <title>Diffie-Hellman Key Exchange</title>
-</head>
+<h3>Diffie-Hellman</h3>
 
-<body style="text-align:center; font-family:Arial; margin-top:40px;">
+p: <input id="p"><br>
+g: <input id="g"><br>
+Alice Secret (a): <input id="a"><br>
+Bob Secret (b): <input id="b"><br><br>
 
-    <h2>🔐 Diffie-Hellman Key Exchange</h2>
+<button onclick="run()">Compute</button>
 
-    Prime (p): <input type="number" id="p"><br><br>
-    Generator (g): <input type="number" id="g"><br><br>
-    1st Secret (a): <input type="number" id="a"><br><br>
-    2nd Secret (b): <input type="number" id="b"><br><br>
+<p id="out"></p>
 
-    <button onclick="calculate()">Generate Key</button>
+<script>
+function run(){
+ let p = +document.getElementById("p").value;
+ let g = +document.getElementById("g").value;
+ let a = +document.getElementById("a").value;
+ let b = +document.getElementById("b").value;
 
-    <h3>Results</h3>
-    <p>Public Key A: <span id="A"></span></p>
-    <p>Public Key B: <span id="B"></span></p>
-    <p>Secret at 1st Person: <span id="SA"></span></p>
-    <p>Secret at 2nd Person: <span id="SB"></span></p>
-    <p id="result"></p>
+ let A = (g**a) % p;
+ let B = (g**b) % p;
 
-    <script>
-        function calculate() {
-            let p = parseInt(document.getElementById("p").value);
-            let g = parseInt(document.getElementById("g").value);
-            let a = parseInt(document.getElementById("a").value);
-            let b = parseInt(document.getElementById("b").value);
+ let S1 = (B**a) % p;
+ let S2 = (A**b) % p;
 
-            // Same logic as your Java code
-            let A = Math.pow(g, a) % p;
-            let B = Math.pow(g, b) % p;
-
-            let S_A = Math.pow(B, a) % p;
-            let S_B = Math.pow(A, b) % p;
-
-            document.getElementById("A").innerText = A;
-            document.getElementById("B").innerText = B;
-            document.getElementById("SA").innerText = S_A;
-            document.getElementById("SB").innerText = S_B;
-
-            if (S_A === S_B) {
-                document.getElementById("result").innerHTML =
-                    "✅ They can communicate! Shared Secret: " + S_A;
-            } else {
-                document.getElementById("result").innerHTML =
-                    "❌ They can't communicate!";
-            }
-        }
-    </script>
+ document.getElementById("out").innerHTML =
+  (S1==S2) ? "Shared Key = " + S1 : "Not Equal";
+}
+</script>
 
 </body>
-
 </html>
