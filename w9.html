@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html>
+<head>
+<title>Diffie-Hellman</title>
+</head>
 <body>
 
-<h3>Diffie-Hellman</h3>
+<h2>Diffie-Hellman Key Exchange</h2>
 
 p: <input id="p"><br>
 g: <input id="g"><br>
-Alice Secret (a): <input id="a"><br>
-Bob Secret (b): <input id="b"><br><br>
+a: <input id="a"><br>
+b: <input id="b"><br><br>
 
-<button onclick="run()">Compute</button>
+<button onclick="calculate()">Generate Key</button>
 
-<p id="out"></p>
+<p id="output"></p>
 
 <script>
-function run(){
+function calculate() {
  let p = +document.getElementById("p").value;
  let g = +document.getElementById("g").value;
  let a = +document.getElementById("a").value;
  let b = +document.getElementById("b").value;
 
- let A = (g**a) % p;
- let B = (g**b) % p;
+ let A = Math.pow(g, a) % p;
+ let B = Math.pow(g, b) % p;
 
- let S1 = (B**a) % p;
- let S2 = (A**b) % p;
+ let key1 = Math.pow(B, a) % p;
+ let key2 = Math.pow(A, b) % p;
 
- document.getElementById("out").innerHTML =
-  (S1==S2) ? "Shared Key = " + S1 : "Not Equal";
+ document.getElementById("output").innerHTML =
+  "Public Key A: " + A + "<br>" +
+  "Public Key B: " + B + "<br><br>" +
+  "Secret from A: " + key1 + "<br>" +
+  "Secret from B: " + key2 + "<br><br>" +
+  (key1 === key2 ? "✅ Shared Key: " + key1 : "❌ Keys do not match");
 }
 </script>
 
