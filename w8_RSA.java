@@ -1,7 +1,6 @@
 package cns;
 
 import java.math.BigInteger;
-import java.util.Random;
 import java.util.Scanner;
 
 public class w8_RSA {
@@ -23,7 +22,7 @@ public class w8_RSA {
         BigInteger phi = (p.subtract(BigInteger.ONE))
                          .multiply(q.subtract(BigInteger.ONE));
 
-        // public key
+        // generate e starting from 3
         BigInteger e = generateE(phi);
 
         // private key
@@ -33,18 +32,17 @@ public class w8_RSA {
         System.out.println("Private Key (d, n): (" + d + ", " + n + ")");
     }
 
-    // Generate e such that gcd(e, phi) = 1
     public static BigInteger generateE(BigInteger phi) {
 
-        Random r = new Random();
-        BigInteger e;
+        BigInteger e = BigInteger.valueOf(3);
 
-        do {
-            e = new BigInteger(phi.bitLength(), r);
-        } while (e.compareTo(BigInteger.TWO) <= 0 ||
-                 e.compareTo(phi) >= 0 ||
-                 !phi.gcd(e).equals(BigInteger.ONE));
+        while (e.compareTo(phi) < 0) {
+            if (phi.gcd(e).equals(BigInteger.ONE)) {
+                return e;
+            }
+            e = e.add(BigInteger.TWO);
+        }
 
-        return e;
+        return null;
     }
 }
