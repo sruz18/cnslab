@@ -3,7 +3,7 @@
 
 int main()
 {
-    char text[] = "Hello World";
+    char *text = "Hello World";
     char andResult[12];
     char xorResult[12];
     int i, size;
