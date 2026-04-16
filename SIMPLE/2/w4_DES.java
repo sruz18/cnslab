@@ -1,41 +1,40 @@
-import java.util.Scanner;
+package cns;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.util.Base64;
+import java.util.Scanner;
 
-public class w4_DES {
-
+public class DESAlgorithm {
     public static void main(String[] args) {
-
         try {
-            // Generate DES key
-            KeyGenerator kg = KeyGenerator.getInstance("DES");
-            kg.init(56); // 56-bit key
-            SecretKey key = kg.generateKey();
+            // Generate a DES key
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
+            keyGenerator.init(56); // DES uses a 56-bit key
+            SecretKey secretKey = keyGenerator.generateKey();
 
-            // Create Cipher
+            // Create a Cipher object for DES
             Cipher cipher = Cipher.getInstance("DES");
 
-            // Take input
-            Scanner sc = new Scanner(System.in);
+            // Take user input
+            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter text to encrypt: ");
-            String text = sc.nextLine();
+            String plainText = scanner.nextLine();
 
-            // Encrypt
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encryptedBytes = cipher.doFinal(text.getBytes());
+            // Encrypt the text
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
             String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
             System.out.println("\nEncrypted Text: " + encryptedText);
 
-            // Decrypt
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            // Decrypt the text
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
             String decryptedText = new String(decryptedBytes);
             System.out.println("Decrypted Text: " + decryptedText);
 
-            sc.close();
-
+            scanner.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
