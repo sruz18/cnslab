@@ -1,22 +1,42 @@
-import javax.crypto.*;
+package cns;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.util.Base64;
+import java.util.Scanner;
 
-public class w6_AES {
-    public static void main(String[] args) throws Exception {
+public class AESAlgorithm {
+    public static void main(String[] args) {
+        try {
+            // Generate a DES key
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(128); // DES uses a 56-bit key
+            SecretKey secretKey = keyGenerator.generateKey();
 
-        String text = "Hello, Rijndael AES!";
+            // Create a Cipher object for DES
+            Cipher cipher = Cipher.getInstance("AES");
 
-        KeyGenerator kg = KeyGenerator.getInstance("AES");
-        SecretKey key = kg.generateKey();
+            // Take user input
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter text to encrypt: ");
+            String plainText = scanner.nextLine();
 
-        Cipher c = Cipher.getInstance("AES");
+            // Encrypt the text
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+            String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
+            System.out.println("\nEncrypted Text: " + encryptedText);
 
-        c.init(Cipher.ENCRYPT_MODE, key);
-        String enc = Base64.getEncoder().encodeToString(c.doFinal(text.getBytes()));
-        System.out.println("Encrypted: " + enc);
+            // Decrypt the text
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
+            String decryptedText = new String(decryptedBytes);
+            System.out.println("Decrypted Text: " + decryptedText);
 
-        c.init(Cipher.DECRYPT_MODE, key);
-        String dec = new String(c.doFinal(Base64.getDecoder().decode(enc)));
-        System.out.println("Decrypted: " + dec);
+            scanner.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
