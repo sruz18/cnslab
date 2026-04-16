@@ -1,38 +1,30 @@
 package cns;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.util.Base64;
-import java.util.Scanner;
+import javax.crypto.*;
+import java.util.*;
 
 public class AESAlgorithm {
     public static void main(String[] args) {
         try {
-            // Generate a DES key
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128); // DES uses a 56-bit key
-            SecretKey secretKey = keyGenerator.generateKey();
+            KeyGenerator k = KeyGenerator.getInstance("AES");
+            k.init(128);
+            SecretKey s = k.generateKey();
 
-            // Create a Cipher object for DES
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher c = Cipher.getInstance("AES");
 
-            // Take user input
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter text to encrypt: ");
-            String plainText = scanner.nextLine();
+            String str = scanner.nextLine();
 
-            // Encrypt the text
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
-            String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
-            System.out.println("\nEncrypted Text: " + encryptedText);
+            c.init(Cipher.ENCRYPT_MODE, s);
+            byte[] ebyte = c.doFinal(str.getBytes());
+            String etext = Base64.getEncoder().encodeToString(ebyte);
+            System.out.println("\nEncrypted Text: " + etext);
 
-            // Decrypt the text
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-            String decryptedText = new String(decryptedBytes);
-            System.out.println("Decrypted Text: " + decryptedText);
+            c.init(Cipher.DECRYPT_MODE, s);
+            byte[] dbyte = c.doFinal(Base64.getDecoder().decode(etext));
+            String dtext = new String(dbyte);
+            System.out.println("Decrypted Text: " + dtext);
 
             scanner.close();
         } catch (Exception e) {
